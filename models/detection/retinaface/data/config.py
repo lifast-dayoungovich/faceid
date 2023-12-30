@@ -20,7 +20,7 @@ cfg_mnet = {
     'out_channel': 64
 }
 
-cfg_re50 = {
+model_cfg_re50 = {
     'name': 'Resnet50',
     'min_sizes': [[16, 32], [64, 128], [256, 512]],
     'steps': [8, 16, 32],
@@ -40,3 +40,15 @@ cfg_re50 = {
     'out_channel': 256
 }
 
+run_face_extractor_cfg = {
+    'pretrained_model_path': './weights/Resnet50_Final.pth',
+    'network': 'resnet50',
+    'use_cpu': False,
+    'confidence_threshold': 0.85,
+    'top_k': 5000,
+    'nms_threshold': 0.4,
+    'keep_top_k': 750,
+    'save_image': True,
+    'vis_thres': 0.3,
+    'resize': 1
+}
