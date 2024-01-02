@@ -41,14 +41,14 @@ model_cfg_re50 = {
 }
 
 run_face_extractor_cfg = {
-    'pretrained_model_path': './weights/Resnet50_Final.pth',
+    'pretrained_model_path': 'weights/Resnet50_Final.pth',
     'network': 'resnet50',
     'use_cpu': False,
-    'confidence_threshold': 0.85,
+    'confidence_threshold': 0.99,
     'top_k': 5000,
     'nms_threshold': 0.4,
     'keep_top_k': 750,
     'save_image': True,
-    'vis_thres': 0.3,
+    'vis_thres': 0.0,
     'resize': 1
 }

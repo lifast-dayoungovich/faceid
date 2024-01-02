@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-import time
+import os
 from datetime import datetime
 
 import torch
@@ -8,13 +8,12 @@ import torch.backends.cudnn as cudnn
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
-from data import model_cfg_re50
-from layers.functions.prior_box import PriorBox
-from models.detection.retinaface.data import run_face_extractor_cfg
+from models.detection.retinaface.layers.functions.prior_box import PriorBox
+from models.detection.retinaface.data import run_face_extractor_cfg, model_cfg_re50
 from models.detection.retinaface.load import load_model
-from utils.nms.py_cpu_nms import py_cpu_nms
-from definitions.retinaface import RetinaFace
-from utils.box_utils import decode, decode_landm
+from models.detection.retinaface.utils.nms.py_cpu_nms import py_cpu_nms
+from models.detection.retinaface.definitions.retinaface import RetinaFace
+from models.detection.retinaface.utils.box_utils import decode, decode_landm
 
 
 def _circle2xy(x_c, y_c, r):
@@ -26,10 +25,12 @@ class ModelManager:
 
     @classmethod
     def _load_model(cls, model_cfg, run_cfg):
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+
         # Load model
         torch.set_grad_enabled(False)
         net = RetinaFace(cfg=model_cfg, phase='test')
-        net = load_model(net, run_cfg['pretrained_model_path'], run_cfg['use_cpu'])
+        net = load_model(net, os.path.join(dir_path,run_cfg['pretrained_model_path']) , run_cfg['use_cpu'])
         net.eval()
 
         # Configure device
@@ -70,7 +71,7 @@ def _save_img(img, dets, run_cfg, run_id):
         draw.ellipse(_circle2xy(b[13], b[14], 3), '#ffff00', width=3)
 
         # Save image
-        img.save(f'./log/imgs/{run_id}.jpg')
+        img.save(f'./log/imgs/{run_id}/detect.jpg')
 
 
 def _transform_input(img, device):
@@ -138,7 +139,7 @@ def run(input_image, run_id=None):
     # Set configuration
     model_cfg = model_cfg_re50
     run_cfg = run_face_extractor_cfg
-    run_id = datetime.now().strftime("%Y%m%d_%H_%M_%S_%f")
+    run_id = run_id or datetime.now().strftime("%Y%m%d_%H_%M_%S_%f")
 
     # Load model
     net, device = ModelManager.get_model(model_cfg, run_cfg)
