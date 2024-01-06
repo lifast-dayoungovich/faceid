@@ -3,9 +3,9 @@ import torch.nn as nn
 import torchvision.models._utils as _utils
 import torch.nn.functional as F
 
-from models.detection.retinaface.definitions.net import MobileNetV1 as MobileNetV1
-from models.detection.retinaface.definitions.net import FPN as FPN
-from models.detection.retinaface.definitions.net import SSH as SSH
+from components.detection.retinaface.definitions.net import MobileNetV1 as MobileNetV1
+from components.detection.retinaface.definitions.net import FPN as FPN
+from components.detection.retinaface.definitions.net import SSH as SSH
 
 
 

@@ -8,12 +8,12 @@ import torch.backends.cudnn as cudnn
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
-from models.detection.retinaface.layers.functions.prior_box import PriorBox
-from models.detection.retinaface.data import run_face_extractor_cfg, model_cfg_re50
-from models.detection.retinaface.load import load_model
-from models.detection.retinaface.utils.nms.py_cpu_nms import py_cpu_nms
-from models.detection.retinaface.definitions.retinaface import RetinaFace
-from models.detection.retinaface.utils.box_utils import decode, decode_landm
+from components.detection.retinaface.layers.functions.prior_box import PriorBox
+from components.detection.retinaface.data import run_face_extractor_cfg, model_cfg_re50
+from components.detection.retinaface.load import load_model
+from components.detection.retinaface.utils.nms.py_cpu_nms import py_cpu_nms
+from components.detection.retinaface.definitions.retinaface import RetinaFace
+from components.detection.retinaface.utils.box_utils import decode, decode_landm
 
 
 def _circle2xy(x_c, y_c, r):
@@ -30,7 +30,7 @@ class ModelManager:
         # Load model
         torch.set_grad_enabled(False)
         net = RetinaFace(cfg=model_cfg, phase='test')
-        net = load_model(net, os.path.join(dir_path,run_cfg['pretrained_model_path']) , run_cfg['use_cpu'])
+        net = load_model(net, os.path.join(dir_path, run_cfg['pretrained_model_path']), run_cfg['use_cpu'])
         net.eval()
 
         # Configure device

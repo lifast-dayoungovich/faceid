@@ -5,7 +5,7 @@ import numpy as np
 
 from PIL import Image
 
-from models.detection.retinaface.detect import run
+from components.detection.retinaface.detect import run
 
 DEFAULT_SQUARE = True
 INNER_PADDING_FACTOR = 0.25
@@ -255,7 +255,7 @@ def align_face(raw, facial_points, crop_size=None):
 
 
 if __name__ == '__main__':
-    image_path = '../detection/retinaface/curve/photo_2024-01-02_17-58-53.jpg'
+    image_path = '../detection/retinaface/curve/zaluzhnyi_test1.jpg'
     img = Image.open(image_path)
     run_id = datetime.now().strftime("%Y%m%d_%H_%M_%S_%f")
     Path(f'./log/imgs/{run_id}/').mkdir(0o733, True, True)
