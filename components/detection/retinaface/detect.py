@@ -2,6 +2,7 @@ from __future__ import print_function
 
 import os
 from datetime import datetime
+from typing import Tuple, Any
 
 import torch
 import torch.backends.cudnn as cudnn
@@ -50,7 +51,7 @@ class ModelManager:
             return loaded
 
 
-def _save_img(img, dets, run_cfg, run_id):
+def draw_detections(img, dets, run_cfg, run_id):
     draw = ImageDraw.Draw(img)
     for b in dets:
         if b[4] < run_cfg['vis_thres']:
@@ -70,8 +71,10 @@ def _save_img(img, dets, run_cfg, run_id):
         draw.ellipse(_circle2xy(b[11], b[12], 3), '#00ff00', width=3)
         draw.ellipse(_circle2xy(b[13], b[14], 3), '#ffff00', width=3)
 
-        # Save image
-        img.save(f'./log/imgs/{run_id}/detect.jpg')
+        if img:
+            # Save image
+            # img.save(f'./log/imgs/{run_id}/detect.jpg')
+            return img
 
 
 def _transform_input(img, device):
@@ -135,7 +138,14 @@ def _filter_prior_boxes(img, net_output, device, model_cfg, run_cfg):
     return dets
 
 
-def run(input_image, run_id=None):
+def init():
+    # Load model
+    model_cfg = model_cfg_re50
+    run_cfg = run_face_extractor_cfg
+    ModelManager.get_model(model_cfg, run_cfg)
+
+
+def run(input_image, run_id=None, return_image=False) -> tuple[np.ndarray, Image] | np.ndarray:
     # Set configuration
     model_cfg = model_cfg_re50
     run_cfg = run_face_extractor_cfg
@@ -152,9 +162,7 @@ def run(input_image, run_id=None):
     net_output = net(img)
     dets = _filter_prior_boxes(img, net_output, device, model_cfg, run_cfg)
 
-    # Show image
-    if run_cfg['save_image']:
-        _save_img(input_image, dets, run_cfg, run_id)
+    draw_detections(input_image, dets, run_cfg, run_id)
 
     return dets
 

@@ -1,19 +1,62 @@
 #:kivy 2.3.0
+<BackgroundColor@Widget>
+    background_color: 1, 1, 1, 1
+    canvas.before:
+        Color:
+            rgba: root.background_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+<FieldLabel@Label+BackgroundColor>
+    background_color: 0.5, 0.5, 0.5, 0.5
+    font_size: 14
+    color: "black"
+
+    height: 40
+
+    halign: 'left'
+    valign: 'middle'
+
+<PrimaryButton@Button+BackgroundColor>
+    background_color: 0.5, 0.5, 0.5, 0.5
+    font_size: 14
+    color: "black"
+
+    height: 40
+
+    halign: 'left'
+    valign: 'middle'
+
+<CameraWidget>:
+    resolution: (640, 480)
+    play: True
+    canvas.before:
+        PushMatrix
+    canvas.after:
+        PopMatrix
 
 <AuthWidget>:
     canvas:
         Rectangle:
-            pos: self.center_x - 5, 0
-            size: 10, self.height
+            pos: root.width * 8 / 12, 0
+            size: root.width * 4 / 12, root.height
 
-    Label:
-        font_size: 70
-        center_x: root.width / 4
-        top: root.top - 50
-        text: "0"
+    CameraWidget:
+        id: camera
+        pos: 0, 0
+        size: root.width * 8 / 12, root.height
 
-    Label:
-        font_size: 70
-        center_x: root.width * 3 / 4
-        top: root.top - 50
-        text: "0"
+
+    PrimaryButton:
+        pos: root.width * 9 / 12, root.height * 8 / 12
+        text: "Login"
+        width: root.width * 2 / 12
+        on_press: root.ids.camera.login()
+
+
+    PrimaryButton:
+        pos: root.width * 9 / 12, root.height * 6 / 12
+        text: "Register"
+        width: root.width * 2 / 12
+        on_press: root.ids.camera.register()

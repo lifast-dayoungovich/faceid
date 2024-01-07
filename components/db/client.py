@@ -50,7 +50,7 @@ class DataAccessor:
         self._vectors = self._vectors[np.where(self._vectors != record_vector)]
 
     def get_id_by_sim_vector(self, vector: np.ndarray, sim_th: float) -> tuple[str, float] | tuple[None, None]:
-        distances, indices = self._search_model.kneighbors(vector, n_neighbors=5)
+        distances, indices = self._search_model.kneighbors(vector[None], n_neighbors=1)
 
         filtered = distances < 1 - sim_th
 
@@ -84,10 +84,9 @@ class UserService:
             data_accessor.add_record(username, vector)
 
     @classmethod
-    def has_access(cls, username: str, vector: np.ndarray, sim_th: float):
+    def has_access(cls, username: str, vector: np.ndarray, sim_th: float = 0.6):
         with cls.client as data_accessor:
             top_username, distance = data_accessor.get_id_by_sim_vector(vector, sim_th)
-            print(f"Found: {top_username}, {distance}")
             return top_username == username
 
 

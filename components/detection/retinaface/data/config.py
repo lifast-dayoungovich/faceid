@@ -48,7 +48,7 @@ run_face_extractor_cfg = {
     'top_k': 5000,
     'nms_threshold': 0.4,
     'keep_top_k': 750,
-    'save_image': True,
+    'return_image': True,
     'vis_thres': 0.0,
     'resize': 1
 }
