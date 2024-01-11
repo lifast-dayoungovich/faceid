@@ -126,7 +126,7 @@ def auth_pipeline(image_path, name, similarity_threshold):
     detections = detect.run(img, run_id=run_id)
     for i, detection in enumerate(detections):
         face_img = det2ext.align_face(img, detection[5:])
-        vector = extract.run(face_img)
+        vector = extract.run(face_img)[0]
         return UserService.has_access(username=name, vector=vector, sim_th=similarity_threshold)
 
 
@@ -162,8 +162,8 @@ def test_register_zelenskyi():
 
 
 if __name__ == '__main__':
-    # test_register_zelenskyi()
-    # test_register_zaluzhnyi()
-    # test_register_guys()
+#     test_register_zelenskyi()
+#     test_register_zaluzhnyi()
+#     test_register_guys()
     test_auth_zaluzhnyi()
     test_auth_zelenskyi()

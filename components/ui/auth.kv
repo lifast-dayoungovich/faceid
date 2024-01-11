@@ -36,27 +36,31 @@
     canvas.after:
         PopMatrix
 
-<AuthWidget>:
+<AuthScreen>:
     canvas:
         Rectangle:
             pos: root.width * 8 / 12, 0
             size: root.width * 4 / 12, root.height
+    canvas.before:
+        Color:
+            rgba: 1,1,1,1
 
-    CameraWidget:
-        id: camera
-        pos: 0, 0
-        size: root.width * 8 / 12, root.height
-
-
-    PrimaryButton:
-        pos: root.width * 9 / 12, root.height * 8 / 12
-        text: "Login"
-        width: root.width * 2 / 12
-        on_press: root.ids.camera.login()
+    GridLayout:
+        CameraWidget:
+            id: camera
+            pos: 0, 0
+            size: root.width * 8 / 12, root.height
 
 
-    PrimaryButton:
-        pos: root.width * 9 / 12, root.height * 6 / 12
-        text: "Register"
-        width: root.width * 2 / 12
-        on_press: root.ids.camera.register()
+        PrimaryButton:
+            pos: root.width * 9 / 12, root.height * 8 / 12
+            text: "Login"
+            width: root.width * 2 / 12
+            on_press: root.ids.camera.login()
+
+
+        PrimaryButton:
+            pos: root.width * 9 / 12, root.height * 6 / 12
+            text: "Register"
+            width: root.width * 2 / 12
+            on_press: root.ids.camera.register()

@@ -1,12 +1,11 @@
 from datetime import datetime
-from io import BytesIO
 from pathlib import Path
 
 from PIL import Image
 from kivy.app import App
 from kivy.graphics.texture import Texture
 from kivy.uix.camera import Camera
-from kivy.uix.widget import Widget
+from kivymd.uix.screen import MDScreen
 
 from components.db.client import UserService
 from components.detection.retinaface import detect
@@ -67,13 +66,13 @@ class CameraWidget(Camera):
 
 
 
-class AuthWidget(Widget):
+class AuthScreen(MDScreen):
     pass
 
 
 class AuthApp(App):
     def build(self):
-        return AuthWidget()
+        return AuthScreen()
 
 
 if __name__ == '__main__':
