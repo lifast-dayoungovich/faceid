@@ -17,8 +17,6 @@ from components.detection.retinaface.definitions.retinaface import RetinaFace
 from components.detection.retinaface.utils.box_utils import decode, decode_landm
 
 
-def _circle2xy(x_c, y_c, r):
-    return (x_c - r, y_c - r), (x_c + r, y_c + r)
 
 
 class ModelManager:
@@ -49,32 +47,6 @@ class ModelManager:
             loaded = cls._load_model(model_cfg, run_cfg)
             cls._model = loaded
             return loaded
-
-
-def draw_detections(img, dets, run_cfg, run_id):
-    draw = ImageDraw.Draw(img)
-    for b in dets:
-        if b[4] < run_cfg['vis_thres']:
-            continue
-        text = "{:.4f}".format(b[4])
-        draw.rectangle(b[:4], outline='#0000ea', width=2)
-
-        cx = b[0]
-        cy = b[1] + 12
-
-        draw.text((cx, cy), text, '#000000', ImageFont.load_default(16), align="left")
-
-        # Landmarks
-        draw.ellipse(_circle2xy(b[5], b[6], 3), '#ff0000', width=3)
-        draw.ellipse(_circle2xy(b[7], b[8], 3), '#00ffff', width=3)
-        draw.ellipse(_circle2xy(b[9], b[10], 3), '#ff00ff', width=3)
-        draw.ellipse(_circle2xy(b[11], b[12], 3), '#00ff00', width=3)
-        draw.ellipse(_circle2xy(b[13], b[14], 3), '#ffff00', width=3)
-
-        if img:
-            # Save image
-            # img.save(f'./log/imgs/{run_id}/detect.jpg')
-            return img
 
 
 def _transform_input(img, device):
@@ -161,8 +133,6 @@ def run(input_image, run_id=None, return_image=False) -> tuple[np.ndarray, Image
     # Forward pass
     net_output = net(img)
     dets = _filter_prior_boxes(img, net_output, device, model_cfg, run_cfg)
-
-    draw_detections(input_image, dets, run_cfg, run_id)
 
     return dets
 
